@@ -6,13 +6,13 @@ import requests
 
 
 class VKManager:
-    def __init__(self, login, password, client_id):
+    def __init__(self, login, password):
         self.login = login
         self.password = password
-        self.client_id = client_id
+        self.redirect_uri = "https://oauth.vk.com/blank.html"
         self.url_auth = 'https://oauth.vk.com/authorize?client_id={0}&display=page&redirect_uri=https://oauth.vk.com/blank.html&scope=friends&respоnse_type=token'.format(client_id)
     
-    def get_new_access_token(self):
+    def get_new_access_token(self, client_id, client_secret):
         crawler = crawlers.SeleniumCrawler()
         crawler.driver.get(self.url_auth)
         crawler.wait_loading_by_class('oauth_from_input')
@@ -30,9 +30,17 @@ class VKManager:
         
         code = response_url_auth.split('=')[-1]
         
-        # fill headers
-        url_access_token = 'https://oauth.vk.com/access_token?client_id=&client_secret=&redirect_uri=https://oauth.vk.com/blank.html&code='
-        soap_access_token = crawler.get_soup('{0}{1}'.format(url_access_token, code))
+        url_access_token = 'https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&redirect_uri={2}&code={3}'
+        soap_access_token = crawler.get_soup(url_access_token.format(client_id, client_secret, self.redirect_uri, code))
         access_token = json.loads(soap_access_token.text)['access_token']
         crawler.close()
         return access_token
+
+
+login = ""
+password = ""
+client_id = ""
+client_secret = ""
+
+vkm = VKManager(login, password)
+vkm.get_new_access_token(client_id, client_secret)
