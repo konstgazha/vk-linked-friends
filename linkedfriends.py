@@ -10,7 +10,7 @@ class VKManager:
         self.login = login
         self.password = password
         self.redirect_uri = "https://oauth.vk.com/blank.html"
-        self.url_auth = 'https://oauth.vk.com/authorize?client_id={0}&display=page&redirect_uri=https://oauth.vk.com/blank.html&scope=friends&respоnse_type=token'.format(client_id)
+        self.url_auth = 'https://oauth.vk.com/authorize?client_id={0}&display=page&redirect_uri={1}&scope=friends&respоnse_type=token'.format(client_id, self.redirect_uri)
     
     def get_new_access_token(self, client_id, client_secret):
         crawler = crawlers.SeleniumCrawler()
@@ -38,9 +38,10 @@ class VKManager:
 
 
 login = ""
-password = ""
+password = "$"
 client_id = ""
 client_secret = ""
 
 vkm = VKManager(login, password)
-vkm.get_new_access_token(client_id, client_secret)
+token = vkm.get_new_access_token(client_id, client_secret)
+print(token)
