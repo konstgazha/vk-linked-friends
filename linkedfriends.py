@@ -3,6 +3,7 @@ from pyvirtualdisplay import Display
 import json
 import crawlers
 import vkapi
+from functools import reduce
 
 
 class VKManager:
@@ -35,10 +36,13 @@ class VKManager:
         return access_token
 
 
-login = ""
-password = ""
-client_id = ""
-client_secret = ""
+def get_friends_intersection(users):
+    return reduce(set.intersection, map(set, users))
+
+# login = ""
+# password = ""
+# client_id = ""
+# client_secret = ""
 
 # vkm = VKManager(login, password)
 # token = vkm.get_new_access_token(client_id, client_secret)
@@ -47,4 +51,3 @@ access_token = ""
 
 vk_api = vkapi.VKAPI(access_token)
 friends = vk_api.get_user_friends("")
-print(friends.text)

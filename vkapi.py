@@ -12,4 +12,4 @@ class VKAPI:
         return requests.get(self.__request_template.format(method="friends.get",
                                                            parameters=parameters,
                                                            access_token=self.__access_token,
-                                                           version=self.version))
+                                                           version=self.version)).json()
