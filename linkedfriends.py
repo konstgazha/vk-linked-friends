@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from pyvirtualdisplay import Display
-import crawlers
 import json
-import requests
+import crawlers
+import vkapi
 
 
 class VKManager:
@@ -27,9 +27,7 @@ class VKManager:
             pass
         
         response_url_auth = crawler.driver.current_url
-        
         code = response_url_auth.split('=')[-1]
-        
         url_access_token = 'https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&redirect_uri={2}&code={3}'
         soap_access_token = crawler.get_soup(url_access_token.format(client_id, client_secret, self.redirect_uri, code))
         access_token = json.loads(soap_access_token.text)['access_token']
@@ -38,10 +36,15 @@ class VKManager:
 
 
 login = ""
-password = "$"
+password = ""
 client_id = ""
 client_secret = ""
 
-vkm = VKManager(login, password)
-token = vkm.get_new_access_token(client_id, client_secret)
-print(token)
+# vkm = VKManager(login, password)
+# token = vkm.get_new_access_token(client_id, client_secret)
+# print(token)
+access_token = ""
+
+vk_api = vkapi.VKAPI(access_token)
+friends = vk_api.get_user_friends("")
+print(friends.text)
