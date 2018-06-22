@@ -47,7 +47,7 @@ def get_friends_intersection(users):
     return reduce(set.intersection, map(set, users))
 
 login = ""
-password = ""
+password = "$"
 client_id = ""
 client_secret = ""
 
@@ -58,4 +58,9 @@ print(access_token)
 # access_token = ""
 
 vk_api = vkapi.VKAPI(access_token)
-friends = vk_api.get_user_friends("")
+friends = []
+users = []
+for u in users:
+    friends.append((vk_api.get_user_friends(u)['response']['items']))
+
+print(get_friends_intersection(friends))
